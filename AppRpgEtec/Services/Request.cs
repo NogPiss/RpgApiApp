@@ -55,26 +55,33 @@ namespace AppRpgEtec.Services
         {
             HttpClient httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization
-            = new AuthenticationHeaderValue("Bearer", token);
+                = new AuthenticationHeaderValue("Bearer", token);
+
             var content = new StringContent(JsonConvert.SerializeObject(data));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PutAsync(uri, content);
+
             string serialized = await response.Content.ReadAsStringAsync();
+
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 return int.Parse(serialized);
             else
                 throw new Exception(serialized);
         }
 
+
         public async Task<TResult> GetAsync<TResult>(string uri, string token)
         {
             HttpClient httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization
-            = new AuthenticationHeaderValue("Bearer", token);
+                = new AuthenticationHeaderValue("Bearer", token);
+
             HttpResponseMessage response = await httpClient.GetAsync(uri);
             string serialized = await response.Content.ReadAsStringAsync();
+
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 throw new Exception(serialized);
+
             TResult result = await Task.Run(() => JsonConvert.DeserializeObject<TResult>(serialized));
             return result;
         }
@@ -82,8 +89,7 @@ namespace AppRpgEtec.Services
         public async Task<int> DeleteAsync(string uri, string token)
         {
             HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
-            token);
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             HttpResponseMessage response = await httpClient.DeleteAsync(uri);
             string serialized = await response.Content.ReadAsStringAsync();
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -91,6 +97,7 @@ namespace AppRpgEtec.Services
             else
                 throw new Exception(serialized);
         }
+
 
     }
 }

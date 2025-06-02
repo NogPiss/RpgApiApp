@@ -1,11 +1,12 @@
-﻿using System;
+﻿using AppRpgEtec.Models;
+using AppRpgEtec.Services.Personagens;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AppRpgEtec.Models;
-using AppRpgEtec.Services.Personagens;
+using System.Windows.Input;
 
 namespace AppRpgEtec.ViewModels.Personagens
 {
@@ -20,22 +21,40 @@ namespace AppRpgEtec.ViewModels.Personagens
             Personagens = new ObservableCollection<Personagem>();
 
             _ = ObterPersonagens();
+
+            NovoPersonagemCommand = new Command(async () => { await ExibirCadastroPersonagem();  });
         }
 
+        public ICommand NovoPersonagemCommand { get; }
         public async Task ObterPersonagens()
         {
-            try
+            try //Junto com o Cacth evitará que erros fechem o aplicativo
             {
                 Personagens = await pService.GetPersonagensAsync();
-                OnPropertyChanged(nameof(Personagens));
+                OnPropertyChanged(nameof(Personagens)); //Informará a View que houve carregamento                       
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Ops", ex.Message + "Detalhes: " + ex.InnerException, "OK");
-
+                //Captará o erro para exibir em tela
+                await Application.Current.MainPage
+                    .DisplayAlert("Ops", ex.Message + " Detalhes: " + ex.InnerException, "Ok");
             }
+        }
+
+        public async Task ExibirCadastroPersonagem()
+        {
+            try
+            {
+                await Shell.Current.GoToAsync("cadPersonagemView");
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Ops", ex.Message + "Detalhes: " + ex.InnerException, "Ok");
+            }
+
         }
 
 
     }
 }
+ 
