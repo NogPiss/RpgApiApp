@@ -38,7 +38,7 @@
             <Entry Text="{Binding Derrotas}" FontSize="Medium" Keyboard="Numeric" />
 
             <HorizontalStackLayout Spacing="20">
-                <Button Text="Salvar" Command="Binding SalvarCommand"></Button>
+                <Button Text="Salvar" Command="{Binding SalvarCommand}"></Button>
             </HorizontalStackLayout>
         </VerticalStackLayout>
     </ScrollView>

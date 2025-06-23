@@ -13,9 +13,9 @@ namespace AppRpgEtec.ViewModels.Usuarios
     public class UsuarioViewModel : BaseViewModel
     {
         private UsuarioService _uService;
-        public ICommand AutenticarCommand { get; set; }
-        public ICommand RegistrarCommand { get; set; }
-        public ICommand DirecionarCadastroCommand { get; set; }
+        public ICommand? AutenticarCommand { get; set; }
+        public ICommand? RegistrarCommand { get; set; }
+        public ICommand? DirecionarCadastroCommand { get; set; }
         public UsuarioViewModel()
         {
             _uService = new UsuarioService();
@@ -56,8 +56,6 @@ namespace AppRpgEtec.ViewModels.Usuarios
 
         #region Metodos
 
-        private CancellationTokenSource _cancelTokenSource;
-        private bool _isCheckingLocation;
         public async Task AutenticarUsuario()
         {
             try
